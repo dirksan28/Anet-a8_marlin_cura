@@ -1,0 +1,29 @@
+; -------------------------------
+; Start G-code (Anet A8 + BLTouch)
+; -------------------------------
+
+G21                     ; Use millimeters for all units
+G90                     ; Absolute positioning for X/Y/Z
+M82                     ; Absolute extrusion mode
+M107                    ; Ensure part cooling fan is off
+
+M280 P0 S160            ; BLTouch alarm release
+G4 P100                 ; Wait 100 ms for BLTouch
+G28                     ; Home all axes (Z uses BLTouch)
+
+G29                     ; Auto bed leveling
+
+G1 Z15.0 F6000          ; Raise nozzle to Z=15 mm
+G92 E0                  ; Reset extruder position
+G1 F200 E3              ; Prime nozzle with 3 mm extrusion
+
+G0 F7200 X25.0 Y105.0 Z0.300   ; Move to start position
+G92 E0                         ; Reset extruder
+
+G1 F1800 X25.0 Y15.0 E5.29549   ; Vertical priming line
+G1 X24.0 Y14.0 E10.63369        ; Diagonal move
+G1 X122.0 Y14.0 E16.0           ; Long horizontal line
+G92 E0                  ; Reset extruder for print start
+G1 F{travel_speed}      ; Set travel speed (from slicer variable)
+
+M117 Printing...        ; Display status on LCD
